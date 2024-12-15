@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Credenciales</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 12px;
+            margin: 12px 0;
+            width: 100%;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 14px 24px;
+            font-size: 16px;
+            background-color: #4285f4; /* Azul Google */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #357ae8;
+        }
+
+        .alert {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .content {
+            margin-top: 20px;
+            text-align: left;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 8px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Visualizar Credenciales</h1>
+
+        <!-- Formulario para ingresar la contraseña -->
+        <input type="password" id="password" placeholder="Introduce la contraseña" required>
+        <button onclick="verificarContraseña()">Acceder</button>
+
+        <div class="alert" id="alert-message">Contraseña incorrecta. Inténtalo de nuevo.</div>
+
+        <!-- Área de contenido donde se muestra el archivo credenciales.txt -->
+        <div class="content" id="credencialesContent" style="display:none;"></div>
+    </div>
+
+    <script>
+        // Función para verificar la contraseña
+        function verificarContraseña() {
+            const contraseña = document.getElementById("password").value;
+
+            if (contraseña === "mario112233") {
+                // Si la contraseña es correcta, cargar y mostrar el archivo
+                cargarCredenciales();
+            } else {
+                // Si la contraseña es incorrecta, mostrar un mensaje de error
+                document.getElementById("alert-message").style.display = "block";
+            }
+        }
+
+        // Función para cargar las credenciales desde el archivo 'credenciales.txt'
+        function cargarCredenciales() {
+            // Crear una solicitud para leer el archivo 'credenciales.txt'
+            fetch("credenciales.txt")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("No se pudo acceder al archivo.");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Mostrar las credenciales en el área correspondiente
+                    document.getElementById("credencialesContent").textContent = data;
+                    document.getElementById("credencialesContent").style.display = "block";
+                    document.getElementById("alert-message").style.display = "none"; // Ocultar mensaje de error si la contraseña es correcta
+                })
+                .catch(error => {
+                    console.error("Error al leer el archivo:", error);
+                    document.getElementById("alert-message").style.display = "block";
+                    document.getElementById("alert-message").textContent = "Error al cargar el archivo de credenciales.";
+                });
+        }
+    </script>
+
+</body>
+</html>
